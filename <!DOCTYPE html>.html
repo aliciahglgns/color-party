@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alicia's Color Party</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Shrikhand&display=swap');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    font-family: "DM Sans", sans-serif;
+    background:
+        radial-gradient(circle at 15% 20%, #ff7b9c 0%, transparent 25%),
+        radial-gradient(circle at 85% 25%, #ffbd59 0%, transparent 28%),
+        radial-gradient(circle at 80% 85%, #7bc8ff 0%, transparent 25%),
+        radial-gradient(circle at 20% 80%, #b79cff 0%, transparent 25%),
+        #f6dfc8;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    transition: background 0.8s ease;
+}
+
+.blob {
+    position: fixed;
+    border-radius: 50%;
+    opacity: 0.75;
+    pointer-events: none;
+    animation: float 8s ease-in-out infinite;
+}
+
+.blob1 {
+    width: 220px;
+    height: 220px;
+    background: #ff6b91;
+    left: -80px;
+    top: -40px;
+}
+
+.blob2 {
+    width: 260px;
+    height: 260px;
+    background: #ffd35a;
+    right: -110px;
+    top: 12%;
+    animation-delay: 1s;
+}
+
+.blob3 {
+    width: 240px;
+    height: 240px;
+    background: #77c7ff;
+    left: 10%;
+    bottom: -120px;
+    animation-delay: 2s;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0) rotate(0);
+    }
+    50% {
+        transform: translateY(-20px) rotate(8deg);
+    }
+}
+
+.card {
+    position: relative;
+    z-index: 5;
+    width: min(90%, 430px);
+    min-height: 520px;
+    background: rgba(255, 249, 239, 0.94);
+    border: 3px solid #1d1d1d;
+    border-radius: 32px;
+    padding: 45px 35px;
+    box-shadow: 9px 9px 0 #1d1d1d;
+    text-align: center;
+}
+
+.small-title {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+}
+
+h1 {
+    font-family: "Shrikhand", cursive;
+    font-size: clamp(48px, 11vw, 68px);
+    line-height: 0.92;
+    font-weight: 400;
+    margin-bottom: 22px;
+}
+
+.description {
+    font-size: 15px;
+    line-height: 1.5;
+    max-width: 300px;
+    margin: 0 auto 28px;
+}
+
+input {
+    width: 100%;
+    height: 58px;
+    border: 2px solid #1d1d1d;
+    border-radius: 100px;
+    background: #fffdf8;
+    padding: 0 25px;
+    font-family: inherit;
+    font-size: 16px;
+    outline: none;
+    text-align: center;
+    transition: 0.2s;
+}
+
+input:focus {
+    transform: translateY(-2px);
+    box-shadow: 4px 4px 0 #1d1d1d;
+}
+
+button {
+    width: 100%;
+    height: 58px;
+    margin-top: 14px;
+    border: 2px solid #1d1d1d;
+    border-radius: 100px;
+    background: #1d1d1d;
+    color: white;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button:hover {
+    transform: translateY(-3px);
+    box-shadow: 5px 5px 0 rgba(0,0,0,.25);
+}
+
+.error {
+    min-height: 22px;
+    margin-top: 15px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.hint {
+    margin-top: 12px;
+    font-size: 12px;
+    opacity: 0.55;
+}
+
+#loading,
+#reveal {
+    display: none;
+}
+
+.loading-title {
+    font-family: "Shrikhand", cursive;
+    font-size: 42px;
+    margin-top: 75px;
+}
+
+.loading-colors {
+    display: flex;
+    justify-content: center;
+    gap: 9px;
+    margin-top: 35px;
+}
+
+.loading-dot {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2px solid #1d1d1d;
+    animation: bounce .7s infinite alternate;
+}
+
+.loading-dot:nth-child(1) { background: #ff6584; }
+.loading-dot:nth-child(2) { background: #ffd84d; animation-delay: .1s; }
+.loading-dot:nth-child(3) { background: #6ecb8b; animation-delay: .2s; }
+.loading-dot:nth-child(4) { background: #75bfff; animation-delay: .3s; }
+.loading-dot:nth-child(5) { background: #ad7bf2; animation-delay: .4s; }
+
+@keyframes bounce {
+    from { transform: translateY(0); }
+    to { transform: translateY(-18px); }
+}
+
+.guest-name {
+    font-size: 14px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 25px;
+}
+
+.your-color {
+    font-size: 14px;
+    letter-spacing: 3px;
+    font-weight: 600;
+}
+
+.color-name {
+    font-family: "Shrikhand", cursive;
+    font-size: clamp(52px, 12vw, 76px);
+    line-height: 1;
+    margin: 18px 0;
+    text-transform: uppercase;
+}
+
+.color-circle {
+    width: 125px;
+    height: 125px;
+    margin: 20px auto;
+    border-radius: 50%;
+    border: 3px solid #1d1d1d;
+    box-shadow: 7px 7px 0 #1d1d1d;
+    animation: pop .6s cubic-bezier(.17,.67,.3,1.4);
+}
+
+@keyframes pop {
+    0% { transform: scale(0); }
+    70% { transform: scale(1.12); }
+    100% { transform: scale(1); }
+}
+
+.interpretation {
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: 30px;
+}
+
+.interpretation span {
+    display: block;
+    font-size: 13px;
+    font-weight: 400;
+    margin-top: 6px;
+    opacity: .7;
+}
+
+.shake {
+    animation: shake .35s;
+}
+
+@keyframes shake {
+    0%,100% { transform: translateX(0); }
+    25% { transform: translateX(-7px); }
+    75% { transform: translateX(7px); }
+}
+
+@media(max-width: 500px) {
+    .card {
+        padding: 38px 25px;
+        min-height: 500px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="blob blob1"></div>
+<div class="blob blob2"></div>
+<div class="blob blob3"></div>
+
+<div class="card" id="card">
+
+    <div id="start">
+
+        <div class="small-title">
+            Alicia's 25th Birthday
+        </div>
+
+        <h1>FIND YOUR<br>COLOR</h1>
+
+        <p class="description">
+            Every guest has their own color.<br>
+            Enter your name to reveal yours.
+        </p>
+
+        <input
+            id="nameInput"
+            type="text"
+            placeholder="Enter your name"
+            autocomplete="off"
+        >
+
+        <button onclick="findColor()">
+            REVEAL MY COLOR →
+        </button>
+
+        <div class="error" id="error"></div>
+
+        <div class="hint">
+            Your color is waiting for you ✦
+        </div>
+
+    </div>
+
+    <div id="loading">
+
+        <div class="small-title">
+            ALICIA'S COLOR PARTY
+        </div>
+
+        <div class="loading-title">
+            Finding your color...
+        </div>
+
+        <div class="loading-colors">
+            <div class="loading-dot"></div>
+            <div class="loading-dot"></div>
+            <div class="loading-dot"></div>
+            <div class="loading-dot"></div>
+            <div class="loading-dot"></div>
+        </div>
+
+    </div>
+
+    <div id="reveal">
+
+        <div class="guest-name" id="guestName"></div>
+
+        <div class="your-color">
+            YOUR COLOR IS
+        </div>
+
+        <div class="color-name" id="colorName"></div>
+
+        <div class="color-circle" id="colorCircle"></div>
+
+        <div class="interpretation">
+            Your color. Your interpretation.
+            <span>Make it yours ✦</span>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+const guests = {
+
+    "alena": ["Alena", "GELB", "#F4D447"],
+    "alexandra": ["Alexandra", "DUNKELBLAU", "#263D73"],
+    "maverick": ["Maverick", "ORANGE", "#F28A38"],
+    "anna": ["Anna", "ROT", "#D84A42"],
+    "annika": ["Annika", "ORANGE", "#F28A38"],
+    "miguel": ["Miguel", "DUNKELGRÜN", "#315A45"],
+    "carolin": ["Carolin", "BRAUN", "#8B6249"],
+    "paul": ["Paul", "DUNKELBLAU", "#263D73"],
+    "celina": ["Celina", "HELLBLAU", "#8CCAE8"],
+    "chris": ["Chris", "LILA", "#9A72C7"],
+    "dominik": ["Dominik", "GRÜN", "#6FA75F"],
+    "eduard": ["Eduard", "MINT", "#9BD8C0"],
+    "elmo": ["Elmo", "GRAU", "#9B9B96"],
+    "flo": ["Flo", "ORANGE", "#F28A38"],
+    "hanna": ["Hanna", "GELB", "#F4D447"],
+    "ilyes": ["Ilyes", "SCHWARZ", "#242424"],
+    "isabel": ["Isabel", "ROSA", "#EFA5B5"],
+    "janni": ["Janni", "ROT", "#D84A42"],
+    "zoe": ["Zoe", "HELLBLAU", "#8CCAE8"],
+    "johannes": ["Johannes", "GRAU", "#9B9B96"],
+    "lara": ["Lara", "LILA", "#9A72C7"],
+    "lea": ["Lea", "ORANGE", "#F28A38"],
+    "michelle": ["Michelle", "PINK", "#E85D9E"],
+    "milena": ["Milena", "BORDEAUX", "#7A263A"],
+    "nico b": ["Nico B", "PINK", "#E85D9E"],
+    "nico s": ["Nico S", "WEISS", "#F5F1E8"],
+    "saadi": ["Saadi", "ORANGE", "#F28A38"],
+    "slake": ["Slake", "BLAU", "#487FB8"],
+    "tom": ["Tom", "MINT", "#9BD8C0"],
+    "nico m": ["Nico M", "BEIGE", "#D6BE9B"],
+    "vanessa": ["Vanessa", "WEISS", "#F5F1E8"]
+
+};
+
+function normalizeName(name) {
+    return name
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, " ");
+}
+
+function findColor() {
+
+    const input = document.getElementById("nameInput");
+    const error = document.getElementById("error");
+    const enteredName = normalizeName(input.value);
+
+    error.textContent = "";
+
+    if (!enteredName) {
+        error.textContent = "Please enter your name ✦";
+        shakeCard();
+        return;
+    }
+
+    if (enteredName === "nico") {
+        error.textContent =
+            "Bitte gib Nico B, Nico S oder Nico M ein ♡";
+        shakeCard();
+        return;
+    }
+
+    const guest = guests[enteredName];
+
+    if (!guest) {
+        error.textContent =
+            "Hmm... I couldn't find that name. Check the spelling ♡";
+        shakeCard();
+        return;
+    }
+
+    startReveal(guest);
+}
+
+function startReveal(guest) {
+
+    document.getElementById("start").style.display = "none";
+    document.getElementById("loading").style.display = "block";
+
+    const colors = [
+        "#ff8fa3",
+        "#ffd45c",
+        "#8bd3a8",
+        "#85c8ef",
+        "#aa85db",
+        "#f39548"
+    ];
+
+    let i = 0;
+
+    const animation = setInterval(() => {
+        document.body.style.background = colors[i];
+        i = (i + 1) % colors.length;
+    }, 180);
+
+    setTimeout(() => {
+
+        clearInterval(animation);
+
+        document.getElementById("loading").style.display = "none";
+
+        showResult(guest);
+
+    }, 1900);
+}
+
+function showResult(guest) {
+
+    const name = guest[0];
+    const color = guest[1];
+    const hex = guest[2];
+
+    document.getElementById("guestName").textContent = name;
+    document.getElementById("colorName").textContent = color;
+    document.getElementById("colorCircle").style.background = hex;
+
+    document.body.style.background = hex;
+
+    document.getElementById("reveal").style.display = "block";
+}
+
+function shakeCard() {
+
+    const card = document.getElementById("card");
+
+    card.classList.remove("shake");
+
+    void card.offsetWidth;
+
+    card.classList.add("shake");
+}
+
+document
+    .getElementById("nameInput")
+    .addEventListener("keydown", function(event) {
+
+        if (event.key === "Enter") {
+            findColor();
+        }
+
+    });
+
+</script>
+
+</body>
+</html>
