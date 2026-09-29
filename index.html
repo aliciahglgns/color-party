@@ -475,13 +475,15 @@ function showResult(guest) {
 
     const colorName = document.getElementById("colorName");
 
-    if (color.length >= 9) {
-    colorName.style.fontSize = "48px";
-    } else if (color.length >= 7) {
-    colorName.style.fontSize = "56px";
-    } else {
-    colorName.style.fontSize = "76px";
-    }
+    if (color.length >= 10) {
+    colorName.style.fontSize = "36px";
+} else if (color.length >= 8) {
+    colorName.style.fontSize = "44px";
+} else if (color.length >= 7) {
+    colorName.style.fontSize = "50px";
+} else {
+    colorName.style.fontSize = "68px";
+}
     document.getElementById("colorCircle").style.background = hex;
 
     document.body.style.background = hex;
