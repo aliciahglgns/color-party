@@ -472,6 +472,16 @@ function showResult(guest) {
 
     document.getElementById("guestName").textContent = name;
     document.getElementById("colorName").textContent = color;
+
+    const colorName = document.getElementById("colorName");
+
+    if (color.length >= 9) {
+    colorName.style.fontSize = "48px";
+    } else if (color.length >= 7) {
+    colorName.style.fontSize = "56px";
+    } else {
+    colorName.style.fontSize = "76px";
+    }
     document.getElementById("colorCircle").style.background = hex;
 
     document.body.style.background = hex;
